@@ -1,6 +1,6 @@
 // Source Imports
 import React, { useState } from 'react';
-import { Button } from 'react-bootstrap';
+import TaskMapInit from './data/TaskMap';
 
 // Component Imports
 import HeaderMenu from './components/HeaderMenu';
@@ -9,9 +9,11 @@ import ViewSelectMenu from './components/ViewSelectMenu';
 // Design Imports
 import './App.css';
 import DailyBoard from './components/DailyBoard';
+import { Task } from './interfaces/Task';
 
 function App() {
-  const [card, setCard] = useState<boolean>(false);
+  // Weekly Task Handling
+  const [taskMap, setTaskMap] = useState<Record<string, Task[]>>(TaskMapInit);
 
   return (
     <div className="App">
@@ -22,8 +24,10 @@ function App() {
       <section className="cell-main">
         <ViewSelectMenu></ViewSelectMenu>
 
-        <Button onClick={() => setCard(!card)}>Click Here</Button>
-        { card && <DailyBoard></DailyBoard> }
+        <DailyBoard
+          setTaskMap={setTaskMap}
+          taskMap={taskMap}
+        ></DailyBoard>
       </section>
 
     </div>

@@ -1,7 +1,8 @@
 // Source Imports
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import TaskData from "../data/TaskData";
+import { Task } from "../interfaces/Task";
 
 // Component Imports
 import TaskCard from "./TaskCard";
@@ -9,18 +10,35 @@ import TaskCard from "./TaskCard";
 // Design Imports
 
 
-export default function DailyBoard(): JSX.Element {
+export default function DailyBoard({ setTaskMap, taskMap }: {
+    setTaskMap: (t: Record<string, Task[]>) => void, taskMap: Record<string, Task[]>
+}): JSX.Element {
+    // const [visible, setVisible] = useState<boolean>(false);
+    
+    function CreateTask() {
+        const taskMapBuffer = {...taskMap};
+        // !visible && setVisible(true);
+        taskMapBuffer["Mon"].push(TaskData[TaskData.length] = {id: TaskData.length, task: "New Task", priority: "!"});
+        setTaskMap(taskMapBuffer);
+    }
+
     return(
-        <Container data-testid="board">
-            <Row data-testid="board-row-1" xs={1} md={3}>
-                {TaskData.map(TaskData =>
-                    <Col >
-                        <TaskCard
-                            task={TaskData}
-                        ></TaskCard>
-                    </Col>
-                )}
-            </Row>
-        </Container>
+        <div>
+            <Button onClick={() => CreateTask()}>Create Task</Button>
+
+            <Container data-testid="board">
+                <Row data-testid="board-row-1">
+                    {taskMap["Mon"].map(task =>
+                        <Col key={task.id}>
+                            <TaskCard
+                                task={task}
+                                setTaskMap={setTaskMap}
+                                taskMap={taskMap}
+                            ></TaskCard>
+                        </Col>
+                    )}
+                </Row>
+            </Container>
+        </div>
     );
 }

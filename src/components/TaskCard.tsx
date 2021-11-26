@@ -1,5 +1,5 @@
 // Source Imports
-import React, { useState } from "react";
+import React from "react";
 import { Card } from "react-bootstrap";
 // import TaskData from "../data/TaskData";
 import { Task } from "../interfaces/Task";
@@ -8,16 +8,21 @@ import { Task } from "../interfaces/Task";
 import "../css/TaskCard.css";
 import { FcSportsMode } from "react-icons/fc";
 
-export default function TaskCard({ task }: {
-    task: Task
+export default function TaskCard({ task, setTaskMap, taskMap }: {
+    task: Task,
+    setTaskMap: (t: Record<string, Task[]>) => void, taskMap: Record<string, Task[]>
 }): JSX.Element {
 
-    const [headerVisible, setHeaderVisible] = useState<boolean>(false);
+    function deleteTask(id: number) {
+        const taskMapBuffer = {...taskMap};
+        taskMapBuffer["Mon"] = taskMapBuffer["Mon"].filter(task => task.id !== id);
+        setTaskMap(taskMapBuffer);
+    }
 
     return(
         <Card className="card" style= {{ width: "100%" }}>
             <Card.Header>{task.priority}</Card.Header>
-            <button className="priority-button" onClick={() => setHeaderVisible(!headerVisible)}>
+            <button className="priority-button" onClick={() => deleteTask(task.id)}>
                 <FcSportsMode></FcSportsMode>
             </button>
             <Card.Title className="card-title">{task.task}</Card.Title>
