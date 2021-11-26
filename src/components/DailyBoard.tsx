@@ -27,7 +27,7 @@ export default function DailyBoard({ setTaskMap, taskMap }: {
             <Button onClick={() => CreateTask()}>Create Task</Button>
 
             <Container>
-                <Row xs={1} md={3}>
+                <Row md={ taskMap["Mon"].length < 5 ? "auto" : 5 }>
                     {taskMap["Mon"].map(task =>
                         <Col key={task.id}>
                             <TaskCard
