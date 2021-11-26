@@ -18,7 +18,7 @@ export default function DailyBoard({ setTaskMap, taskMap }: {
     function CreateTask() {
         const taskMapBuffer = {...taskMap};
         // !visible && setVisible(true);
-        taskMapBuffer["Mon"].push(TaskData[TaskData.length] = {id: TaskData.length, task: "New Task", priority: "!"});
+        taskMapBuffer["Mon"].push(TaskData[TaskData.length] = {id: TaskData.length, task: "", priority: "!"});
         setTaskMap(taskMapBuffer);
     }
 
@@ -26,8 +26,8 @@ export default function DailyBoard({ setTaskMap, taskMap }: {
         <div>
             <Button onClick={() => CreateTask()}>Create Task</Button>
 
-            <Container data-testid="board">
-                <Row data-testid="board-row-1">
+            <Container>
+                <Row xs={1} md={3}>
                     {taskMap["Mon"].map(task =>
                         <Col key={task.id}>
                             <TaskCard
