@@ -18,7 +18,7 @@ export default function DailyBoard({ setTaskMap, taskMap }: {
     function CreateTask() {
         const taskMapBuffer = {...taskMap};
         // !visible && setVisible(true);
-        taskMapBuffer["Mon"].push(TaskData[TaskData.length] = {id: TaskData.length, task: "", priority: "!"});
+        taskMapBuffer["Mon"].push(TaskData[TaskData.length] = {id: TaskData.length, task: "", priority: " "});
         setTaskMap(taskMapBuffer);
     }
 

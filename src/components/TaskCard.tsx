@@ -32,6 +32,28 @@ export default function TaskCard({ task, setTaskMap, taskMap }: {
         setEditMode(false);
     }
 
+    function togglePriority(task: Task) {
+        const taskMapBuffer = {...taskMap};
+        taskMapBuffer["Mon"].forEach(taskBuffer => {
+            if(taskBuffer === task) {
+                if (task.priority === "!!!") {
+                    task.priority = " ";
+                }
+                else if (task.priority === " ") {
+                    task.priority = "!";
+                }
+                else if (task.priority === "!") {
+                    task.priority = "!!";
+                }
+                else if (task.priority === "!!") {
+                    task.priority = "!!!";
+                }
+            }
+        });
+        setTaskMap(taskMapBuffer);
+        
+    }
+
     const handleSubmit = (id: number) => (event: { preventDefault: () => void; stopPropagation: () => void; currentTarget: any; }) => {
         event.preventDefault();
         event.stopPropagation();
@@ -41,39 +63,53 @@ export default function TaskCard({ task, setTaskMap, taskMap }: {
 
     return(
         <motion.div
-            onClick={() => setEditMode(!editMode)}
             onHoverEnd={() => setEditMode(false)}
         >
             <Card className="card" style= {{ width: "25vh", height: "20vh", display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center" }}>
-                <Card.Header>
-                    <Badge bg="success">Success</Badge>
-                </Card.Header>
+                <Badge
+                    onClick={() => togglePriority(task)} 
+                    style={
+                        
+                        {
+                        padding: task.priority === " " ? "1em 1em" : "0.35em 0.65em",
+                        position: "absolute",
+                        left: "0",
+                        top: "0",
+                        margin: "5%",
+                        cursor: "pointer"
+                    }} 
+                    bg={ task.priority === " " ? "light" : task.priority === "!" ? "success" : task.priority === "!!" ? "warning" : "danger"}
+                >{task.priority}</Badge>
                 <button className="priority-button" onClick={() => deleteTask(task.id)}>
                     <FcSportsMode></FcSportsMode>
                 </button>
-                <Card.Title className="card-title">
-                    { !editMode && task.task}
-                    { (task.task === "" || editMode) && <Form onSubmit={handleSubmit(task.id)}>
-                        <Form.Control 
-                            style={{
-                                color: "black",
-                                outline: "0",
-                                border: "1px solid #fff",
-                                boxShadow: "none",
-                                textAlign: "center",
-                                
-                            }}
-                            autoFocus
-                            size="lg" 
-                            id="floatingInput" 
-                            type="task" 
-                            placeholder={ task.task === "" ? "Enter Task" : task.task }
-                        />
-                    </Form> }
-                </Card.Title>
+                <motion.div
+                    onClick={() => setEditMode(!editMode)}
+                >
+                    <Card.Title className="card-title">
+                        { !editMode && task.task}
+                        { (task.task === "" || editMode) && <Form onSubmit={handleSubmit(task.id)}>
+                            <Form.Control 
+                                style={{
+                                    color: "black",
+                                    outline: "0",
+                                    border: "1px solid #fff",
+                                    boxShadow: "none",
+                                    textAlign: "center",
+                                    
+                                }}
+                                autoFocus
+                                size="lg" 
+                                id="floatingInput" 
+                                type="task" 
+                                placeholder={ task.task === "" ? "Enter Task" : task.task }
+                            />
+                        </Form> }
+                    </Card.Title>
+                </motion.div>
             </Card>
         </motion.div>
     );
